@@ -14,6 +14,8 @@ class Game(object):
         self.imageSurface = pygame.Surface((self.xSize, self.ySize))
         self.imageSurface.fill((255, 255, 255, 255))
         self.isRunning = True
+        self.frame_rate = 60
+        self.clock = pygame.time.Clock()
         self.t = t
         self.col = 0
         self.g = 10
@@ -73,8 +75,8 @@ class Game(object):
 
     def friction(self, ball):
         theta = arctan2(ball.vy, ball.vx)
-        ball.vx += 0.00000009*ball.m*cos(theta+pi)
-        ball.vy += 0.00000009*ball.m*sin(theta+pi)
+        ball.vx += 0.0000009*ball.m*cos(theta+pi)
+        ball.vy += 0.0000009*ball.m*sin(theta+pi)
 
     def checkCollision(self):
         pairs = product(self.balls, self.balls)
@@ -83,7 +85,7 @@ class Game(object):
                 dist = sqrt((pair[1].pos[0]-pair[0].pos[0])**2 +
                             (pair[1].pos[1]-pair[0].pos[1])**2)
                 if dist <= pair[0].r+pair[1].r and self.nextDistance(pair[0], pair[1]) <= dist:
-                    print(self.nextDistance(pair[0], pair[1]), dist)
+                    #print(self.nextDistance(pair[0], pair[1]), dist)
                     self.collision(pair[0], pair[1])
                     
     def plotWorld(self):
@@ -92,7 +94,7 @@ class Game(object):
             self.recalcPositions(ball)
             if len(self.balls) > 1:
                 self.checkCollision()
-            print(sqrt(ball.vx**2+ball.vy**2))
+            #print(sqrt(ball.vx**2+ball.vy**2))
             self.friction(ball)
             drawPos = [int(x) for x in ball.pos]
             pygame.draw.circle(self.imageSurface, ball.color, drawPos, ball.r)
@@ -125,12 +127,13 @@ while world.isRunning:
             mouseKey = -1
         if key == 1:
             pos = pygame.mouse.get_pos()
-            world.addBall(list(pos), 1, 0, 1)
+            world.addBall(list(pos), 5, 0, 1)
             
     world.display.blit(world.imageSurface, (0, 0))
     world.imageSurface.fill((255, 255, 255, 255))
     world.plotWorld()
-    sleep(0.001)
     pygame.display.update()
+    world.clock.tick(world.frame_rate)
 
+    
     
