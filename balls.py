@@ -8,8 +8,8 @@ from itertools import product
 class Game(object):
     def __init__(self, t=0):
         pygame.init()
-        self.xSize = 800
-        self.ySize = 800
+        self.xSize = 400
+        self.ySize = 400
         self.display = pygame.display.set_mode((self.xSize, self.ySize))
         self.imageSurface = pygame.Surface((self.xSize, self.ySize))
         self.imageSurface.fill((255, 255, 255, 255))
